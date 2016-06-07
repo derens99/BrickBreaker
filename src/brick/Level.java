@@ -11,9 +11,9 @@ import org.newdawn.slick.SlickException;
 public class Level {
 
 	private Random r;
-	private final int WIDTH = 80;
+	private final int WIDTH = 85;
 	private final int NUM_ROWS = 20;
-	private final int HEIGHT = 30;
+	private final int HEIGHT = 35;
 	private ArrayList<Brick> bricks;
 
 	public Level() throws SlickException {
@@ -23,7 +23,7 @@ public class Level {
 	}
 
 	public void fillScreen() throws SlickException {
-		int levelType = 4;//r.nextInt(6) + 1;
+		int levelType = 5;//r.nextInt(6) + 1;
 		switch(levelType){
 		case 1: generateRectangleCoordinates();
 				//bricks.add(new Brick(800, 450));
@@ -38,6 +38,7 @@ public class Level {
 				break;
 		case 6: generateX();
 				break;
+	
 		}
 		
 	}
@@ -97,6 +98,8 @@ public class Level {
 		for (int i = 0; i < bricks.size(); i++) {
 			if(!bricks.get(i).isHit()){
 				g.drawImage(bricks.get(i).getImage(), bricks.get(i).getX(), bricks.get(i).getY());
+			//	g.draw(bricks.get(i).boundingBoxSide);
+			//	g.draw(bricks.get(i).boundingBoxTop);
 			}
 		}
 	}

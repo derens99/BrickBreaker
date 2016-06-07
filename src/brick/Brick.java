@@ -37,8 +37,10 @@ public class Brick {
 		imageNum = gen.nextInt(4);
 		assignHitIndex();
 		image = new Image(images[hitIndex][imageNum]);
-		boundingBoxTop = new Rectangle(x + 5, y - 5, WIDTH - 10, HEIGHT + 5);
-		boundingBoxSide = new Rectangle(x - 5, y + 5, WIDTH + 5, HEIGHT - 5);
+		
+		boundingBoxTop = new Rectangle(x+1, y, WIDTH-2, HEIGHT);
+		boundingBoxSide = new Rectangle(x , y+1 , WIDTH , HEIGHT-2 );
+		
 		numHit = 0;
 		totalHit = 0;
 	}
