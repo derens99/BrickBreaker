@@ -19,11 +19,11 @@ public class Ball extends Entity {
      public Shape boundingBox;
      public Ball()
      {
-        ballX = lastBallX = 800;
+        ballX = lastBallX = 790;
         ballY = lastBallY = 700;
         ballWidth = 25;
         ballHeight = 25;
-        ballSpeed = -5;
+        ballSpeed = -7;
         ballXVel = 0;
         ballYVel = ballSpeed;
         boundingBox = new Ellipse(ballX, ballY, 10, 10);
@@ -31,6 +31,11 @@ public class Ball extends Entity {
      
      public int getX(){
     	 return ballX;
+     }
+     public void setX(int x){
+    	 ballX = x;
+     }  public void setY(int y){
+    	 ballY = y;
      }
      
      public int getY(){
@@ -46,7 +51,7 @@ public class Ball extends Entity {
         lastBallX = ballX;
         lastBallY = ballY;
         
-        ballX += ballXVel;
+       ballX += ballXVel;
         ballY += ballYVel;
         
     
@@ -75,10 +80,26 @@ public class Ball extends Entity {
 	}
      
 	public void hit(int i){
-		if(i == 0)
+		if(i == 0){
+			if(ballYVel>0){
+				ballY -= 4;
+			}else{
+				ballY += 4;
+			}
+			boundingBox.setY(ballY);
+			
 			ballYVel *=-1;
-		if(i == 1)
+		}
+		else if(i == 1){
+			if(ballXVel>0){
+				ballX -= 3;
+			}else{
+				ballX += 3;
+			}
 			ballXVel *=-1;
+		}
+		 boundingBox.setX(ballX);
+	     boundingBox.setY(ballY);
 	}
 	
 	private void getAngle(Paddle p){

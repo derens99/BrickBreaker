@@ -25,6 +25,9 @@ public class Play extends BasicGameState {
 	private Shape wallY;
 	private Shape wallX;
 	private Shape eGame;
+	private boolean hit = false;
+	
+	
 
 	// MouseController mouse = new MouseController
 
@@ -59,6 +62,7 @@ public class Play extends BasicGameState {
 
 		g.drawImage(paddleI, paddle.getX(), Game.GAME_HEIGHT - 50);
 		g.drawOval(ball.getX(), ball.getY(), 20, 20);
+		g.draw(ball.boundingBox);
 
 		g.draw(paddle.getBoundingBox());
 		g.draw(ball.getBoundingBox());
@@ -74,8 +78,11 @@ public class Play extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int arg2) throws SlickException {
 		Input input = gc.getInput();
-
+		hit = false;
+	//	ball.setX(Mouse.getX() - 5);
+		//ball.setY(Mouse.getY() - 5);
 		ball.update();
+		
 		paddle.setX(Mouse.getX() - 80);
 
 		if (ball.intersects(paddle)) {
@@ -85,27 +92,45 @@ public class Play extends BasicGameState {
 			ball.hit(1);
 
 		}
-		if (ball.getBoundingBox().intersects(wallX)) {
+		else if (ball.getBoundingBox().intersects(wallX)) {
 			ball.hit(0);
 		}
 
 		for (int i = 0; i < l.getBricks().size(); i++) {
-			if (!l.getBricks().get(i).isHit()) {
-				if (ball.getBoundingBox().intersects(l.getBricks().get(i).getTop())) {
-					ball.hit(0);
-					l.getBricks().get(i).hit();
-					s.add(10);
-				}
-				else if(ball.getBoundingBox().intersects(l.getBricks().get(i).getSide())){
-					ball.hit(1);
-					l.getBricks().get(i).hit();
-					s.add(10);
-				}
+			
+			Brick brick = l.getBricks().get(i);
+			
+			if (!brick.isHit()) {
+				 if(ball.getBoundingBox().intersects(brick.getTop())||ball.getBoundingBox().intersects(brick.getSide())){
+					 
+					 
+					if (ball.getBoundingBox().intersects(brick.getTop())) {
+						System.out.println("TOP");
+						if(!hit)
+							ball.hit(0);
+						
+						brick.hit();
+						s.add(10);
+						break;
+					}
+					else if(ball.getBoundingBox().intersects(brick.getSide())){
+						System.out.println("SIDE");
+						if(!hit)
+							ball.hit(1);
+						
+						brick.hit();
+						s.add(10);
+						break;
+						
+					}
+				 }
+				 hit = true;
 				if (Brick.numHit == l.getBricks().size()) {
 					l = new Level();
 					levelNum++;
 				}
 			}
+			
 		}
 
 		if (input.isKeyDown(Input.KEY_ESCAPE)) {
