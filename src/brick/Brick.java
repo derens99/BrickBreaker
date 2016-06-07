@@ -14,7 +14,7 @@ public class Brick {
 	private int x, y;
 	public static final int WIDTH = 80;
 	public static final int HEIGHT = 30;
-	public static int numHit;
+	public static int numHit, totalHit;
 	private Image image;
 	public Shape boundingBoxTop;
 	public Shape boundingBoxSide;
@@ -40,6 +40,7 @@ public class Brick {
 		boundingBoxTop = new Rectangle(x + 5, y - 5, WIDTH - 10, HEIGHT + 5);
 		boundingBoxSide = new Rectangle(x - 5, y + 5, WIDTH + 5, HEIGHT - 5);
 		numHit = 0;
+		totalHit = 0;
 	}
 
 	public void assignHitIndex() {
@@ -49,6 +50,10 @@ public class Brick {
 			hitIndex = gen.nextInt(2);
 		} else if (Play.levelNum < 6)
 			hitIndex = gen.nextInt(3);
+	}
+	
+	public static void newLevel(){
+		numHit = 0;
 	}
 
 	public int getX() {
@@ -75,6 +80,7 @@ public class Brick {
 		hitIndex++;
 		if (hitIndex == 3) {
 			numHit++;
+			totalHit++;
 			hit = true;
 		} else {
 			image = new Image(images[hitIndex][imageNum]);

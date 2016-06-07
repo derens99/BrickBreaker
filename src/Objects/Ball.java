@@ -29,6 +29,16 @@ public class Ball extends Entity {
         boundingBox = new Ellipse(ballX, ballY, 10, 10);
      }
      
+     public void speedUp(){
+    	 boolean neg = false;;
+    	 if(ballSpeed < 0){
+    		 neg = true;
+    		 ballSpeed = -1 * (Math.abs(ballSpeed) + 1);
+    	 }else
+    		 ballSpeed++;
+    	 System.out.println(ballSpeed);
+     }
+     
      public int getX(){
     	 return ballX;
      }

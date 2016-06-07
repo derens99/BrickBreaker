@@ -78,6 +78,9 @@ public class Play extends BasicGameState {
 		ball.update();
 		paddle.setX(Mouse.getX() - 80);
 
+		if(Brick.totalHit % 4 == 0){
+			ball.speedUp();
+		}
 		if (ball.intersects(paddle)) {
 			ball.ballCollide(paddle);
 		}
@@ -104,6 +107,7 @@ public class Play extends BasicGameState {
 				if (Brick.numHit == l.getBricks().size()) {
 					l = new Level();
 					levelNum++;
+					Brick.newLevel();
 				}
 			}
 		}
