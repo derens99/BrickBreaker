@@ -8,12 +8,19 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import guiobjects.Button;
+
 public class Menu extends BasicGameState{
 	
 	private Image play;
 	private Image quit;
 	private Image tutorial;
 	private Image settings;
+	
+	private Button playButton;
+	private Button quitButton;
+	private Button tutorialButton;
+	private Button settingsButton;
 	
 	private Image background;
 	
@@ -29,7 +36,12 @@ public class Menu extends BasicGameState{
 	
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
+		
 		background = new Image("res/background.jpg");
+		playButton = new Button(new Image("res/play.png"), new Image("res/playSelect.png"), Game.GAME_WIDTH/2-200, Game.GAME_HEIGHT/2-150, BUTTON_WIDTH, BUTTON_HEIGHT);
+		quitButton = new Button(new Image("res/quit.png"), new Image("res/quitSelect.png"), Game.GAME_WIDTH/2-425, Game.GAME_HEIGHT/2+150, BUTTON_WIDTH, BUTTON_HEIGHT);
+		tutorialButton = new Button(new Image("res/tutorial.png"), new Image("res/tutorialSelect.png"), Game.GAME_WIDTH/2-200, Game.GAME_HEIGHT/2, BUTTON_WIDTH, BUTTON_HEIGHT);
+		settingsButton = new Button(new Image("res/settings.png"), new Image("res/settingsSelect.png"), Game.GAME_WIDTH/2+25, Game.GAME_HEIGHT/2+150, BUTTON_WIDTH, BUTTON_HEIGHT);
 		
 	}
 
@@ -39,19 +51,14 @@ public class Menu extends BasicGameState{
 		int x = Mouse.getX();
 		int y = Mouse.getY();
 		
-		play = new Image("res/play.png");
-		quit = new Image("res/quit.png");
-		tutorial = new Image("res/tutorial.png");
-		settings = new Image("res/settings.png");
-		
-		meteor = new Image("res/meteorL.png");
-		
 		g.drawImage(background, 0, 0);
 		
-		g.drawImage(play,Game.GAME_WIDTH/2-200, Game.GAME_HEIGHT/2-150);
-		g.drawImage(quit,Game.GAME_WIDTH/2-425, Game.GAME_HEIGHT/2+150);
-		g.drawImage(tutorial,Game.GAME_WIDTH/2-200, Game.GAME_HEIGHT/2);
-		g.drawImage(settings,Game.GAME_WIDTH/2+25, Game.GAME_HEIGHT/2+150);
+		playButton.drawButton(g);
+		quitButton.drawButton(g);
+		tutorialButton.drawButton(g);
+		settingsButton.drawButton(g);
+		
+		meteor = new Image("res/meteorL.png");
 		
 		g.drawImage(meteor, pos, 20);
 		pos++;
@@ -61,7 +68,6 @@ public class Menu extends BasicGameState{
 		
 		g.drawString("X: " + x + " Y: " + y, 100, 10);
 		
-		highlightEffect(g);
 		
 	}
 
@@ -70,58 +76,25 @@ public class Menu extends BasicGameState{
 		int x = Mouse.getX();
 		int y = Mouse.getY();
 		
-		//Play button
-		if((x > 600 && x < 1000) && (y < 600 && y > 500)){
-			if(Mouse.isButtonDown(0)){
-				sbg.enterState(1);
-			}
-			
+		if(playButton.isClicked()){
+			sbg.enterState(Game.PLAY);
 		}
-		//Quit button
-		if(x > 375 && x < 775 && y<300 && y > 200){
-			if(Mouse.isButtonDown(0)){
-				System.exit(0);
-			}
+		if(quitButton.isClicked()){
+			System.exit(0);
 		}
+		if(tutorialButton.isClicked()){
+			sbg.enterState(Game.TUTORIAL);
+		}
+		if(settingsButton.isClicked()){
+			sbg.enterState(Game.SETTINGS);
+		}
+		
 		
 	}
 
 	@Override
 	public int getID() {
-		return 0;
+		return 1;
 	}
-	
-	private void highlightEffect(Graphics g){
-		int x = Mouse.getX();
-		int y = Mouse.getY();
-		if((x > 600 && x < 1000) && (y < 600 && y > 500)){
-			try {
-				play = new Image("res/playSelect.png");
-				g.drawImage(play,Game.GAME_WIDTH/2-200, Game.GAME_HEIGHT/2-150);
-			} catch (SlickException e) {
-			}
-		}
-		if((x > 375 && x < 775)&&(y < 300 && y > 200)){
-			try {
-				quit = new Image("res/quitSelect.png");
-			} catch (SlickException e) {
-			}
-			g.drawImage(quit,Game.GAME_WIDTH/2-425, Game.GAME_HEIGHT/2+150);
-		}
-		if(x > 600 && x < 1000 && y < 450 && y > 350){
-			try {
-				tutorial = new Image("res/tutorialSelect.png");
-			} catch (SlickException e) {
-			}
-			g.drawImage(tutorial,Game.GAME_WIDTH/2-200, Game.GAME_HEIGHT/2);
-		}
-		if(x > 825 && x < 1225 && y < 300 && y > 200){
-			try {
-				settings = new Image("res/settingsSelect.png");
-			} catch (SlickException e) {
-			}
-			g.drawImage(settings,Game.GAME_WIDTH/2+25, Game.GAME_HEIGHT/2+150);
-		}
-	}
-	
+
 }

@@ -14,9 +14,9 @@ public class Generate {
 		for (int i = 0; i < c; i++) {
 			for (int j = 0; j < r; j++) {
 				bricks.add(new Brick(x, y));
-				x += Brick.WIDTH;
+				x += Brick.WIDTH + 5;
 			}
-			y += Brick.HEIGHT;
+			y += Brick.HEIGHT + 5;
 			x = startingX;
 		}
 		return bricks;
@@ -25,8 +25,8 @@ public class Generate {
 	public static ArrayList<Brick> random(ArrayList<Brick> bricks)
 			throws SlickException {
 		Random r = new Random();
-		for (int i = 0; i < 450; i += 30) {
-			for (int j = 0; j < 1600; j += 80) {
+		for (int i = 10; i < 450; i += 35) {
+			for (int j = 30; j + 80 < 1600; j += 85) {
 				if (r.nextInt(2) == 0) {
 					bricks.add(new Brick(j, i));
 				}
@@ -37,8 +37,8 @@ public class Generate {
 
 	public static ArrayList<Brick> columns(ArrayList<Brick> bricks)
 			throws SlickException {
-		for (int i = 0; i < 450; i += 30) {
-			for (int j = 0; j < 1600; j += 160) {
+		for (int i = 70; i <= 350; i += 35) {
+			for (int j = 30; j < 1520; j += 160) {
 				bricks.add(new Brick(j, i));
 			}
 		}
@@ -54,16 +54,16 @@ public class Generate {
 			throws SlickException {
 		int j = 0;
 		boolean tab = false;
-		for (int i = 0; i < 450; i += 30) {
+		for (int i = 10; i < 450; i += 35) {
 			if (tab) {
-				j = 80;
+				j = 90;
 				tab = false;
 			} else {
 				tab = true;
-				j = 0;
+				j = 10;
 			}
 
-			for (; j < 1600; j += 160) {
+			for (; j + 80 < 1600; j += 160) {
 				bricks.add(new Brick(j, i));
 			}
 		}
@@ -72,22 +72,10 @@ public class Generate {
 
 	public static ArrayList<Brick> rows(ArrayList<Brick> bricks)
 			throws SlickException {
-		for (int i = 0; i < 450; i += 60) {
-			for (int j = 0; j < 1600; j += 80) {
+		for (int i = 90; i < 390; i += 60) {
+			for (int j = 5; j + 80 < 1600; j += 84) {
 				bricks.add(new Brick(j, i));
 			}
-		}
-		return bricks;
-	}
-
-	public static ArrayList<Brick> x(ArrayList<Brick> bricks)
-			throws SlickException {
-		int x = 0;
-		for (int i = 0; i < 630; i += 30) {
-			bricks.add(new Brick(1520-x, i));
-			bricks.add(new Brick(x, i));
-			System.out.println(x);
-			x+=80;
 		}
 		return bricks;
 	}

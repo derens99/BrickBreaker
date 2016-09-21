@@ -2,11 +2,14 @@ package brick;
 
 import java.util.Random;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
+import Objects.PowerUpType;
 import gui.Play;
 
 public class Brick {
@@ -16,11 +19,14 @@ public class Brick {
 	public static final int HEIGHT = 30;
 	public static int numHit, totalHit;
 	private Image image;
-	public Shape boundingBoxTop;
-	public Shape boundingBoxSide;
 	public boolean hit;
 	private int imageNum;
 	private int hitIndex;
+	public PowerUpType type = PowerUpType.NONE;
+	
+	private boolean isPowerUp;
+	
+	private Line top, bottom, left, right;
 
 	public static String[][] images = {
 			{ "res/greenbrick.jpg", "res/bluebrick.jpg", "res/redbrick.jpg", "res/purplebrick.jpg" },
@@ -38,11 +44,34 @@ public class Brick {
 		assignHitIndex();
 		image = new Image(images[hitIndex][imageNum]);
 		
-		boundingBoxTop = new Rectangle(x+1, y, WIDTH-2, HEIGHT);
-		boundingBoxSide = new Rectangle(x , y+1 , WIDTH , HEIGHT-2 );
-		
 		numHit = 0;
 		totalHit = 0;
+		if (powerUp()) {
+			hitIndex = 2;
+			image = new Image("res/powerupbrick.png");
+			int rand = gen.nextInt(2);
+			
+			switch(rand){
+			case 0: type = PowerUpType.FIRE;
+				break;
+			case 1: type = PowerUpType.LIVE;
+				break;
+			case 2: type = PowerUpType.STICKY;
+				break;
+			case 3: type = PowerUpType.FIRE;
+				break;
+			}
+			
+		} else {
+			isPowerUp = false;
+			imageNum = gen.nextInt(4);
+			assignHitIndex();
+			image = new Image(images[hitIndex][imageNum]);
+		}
+		top = new Line(x-1, y, x+WIDTH+1, y);
+		bottom = new Line(x-1, y+HEIGHT, x+WIDTH+1, y+HEIGHT);
+		left = new Line(x, y+1, x, y+HEIGHT-1);
+		right = new Line(x+WIDTH, y+1, x+WIDTH, y+HEIGHT-1);
 	}
 
 	public void assignHitIndex() {
@@ -69,21 +98,74 @@ public class Brick {
 	public Image getImage() {
 		return image;
 	}
-
-	public Shape getTop() {
-		return boundingBoxTop;
+	
+	public Image getEpilepsy() throws SlickException{
+		
+		return new Image(images[gen.nextInt(2)][gen.nextInt(2)]);
+	}
+	
+	public Line getTop(){
+		return top;
 	}
 
-	public Shape getSide() {
-		return boundingBoxSide;
+	public Line getBottom() {
+		return bottom;
+	}
+
+	public Line getLeft() {
+		return left;
+	}
+
+	public Line getRight() {
+		return right;
+	}
+	
+	public boolean powerUp() {
+		if (gen.nextInt(37) == 12) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean getPowerUp(){
+		return isPowerUp;
+	}
+	
+	public void drawLines(Graphics g){
+		g.draw(top);
+		g.draw(getBottom());
+		g.draw(getRight());
+		g.draw(getLeft());
+	}
+	public void drawTop(Graphics g){
+		g.draw(top);
+		
+	}
+	public void drawBot(Graphics g){
+		
+		g.draw(getBottom());
+		
+	}
+	public void drawLeft(Graphics g){
+		
+		g.draw(getLeft());
+	}
+	public void drawRight(Graphics g){
+		
+		
+		g.draw(getRight());
+		
 	}
 
 	public void hit() throws SlickException {
 		hitIndex++;
 		if (hitIndex == 3) {
+		//	System.out.println("BRICK being hit: (" + this.getX() + "," + this.getY()+")");
 			numHit++;
 			totalHit++;
 			hit = true;
+			
+			Play.numHit++;
 		} else {
 			image = new Image(images[hitIndex][imageNum]);
 		}
